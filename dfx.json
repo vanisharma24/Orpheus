@@ -1,18 +1,13 @@
 {
   "canisters": {
-    "hello_backend": {
-      "main": "src/hello_backend/main.mo",
-      "type": "motoko"
+    "orpheus_backend": {
+      "candid": "src/orpheus_backend/orpheus_backend.did",
+      "package": "orpheus_backend",
+      "type": "rust"
     },
-    "hello_frontend": {
-      "dependencies": [
-        "hello_backend"
-      ],
-      "source": [
-        "src/hello_frontend/dist"
-      ],
+    "orpheus_frontend": {
       "type": "assets",
-      "workspace": "hello_frontend"
+      "source": ["./dist"]
     }
   },
   "defaults": {

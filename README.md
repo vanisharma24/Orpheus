@@ -1,126 +1,113 @@
-# 🌐 DEHIX x ICO – Decentralized Innovation 🚀  
-![DEHIX x ICO Banner](https://via.placeholder.com/1200x400?text=DEHIX+x+ICO+Web3+Platform)  
+# 🎵 Orpheus - Music Collaboration on Internet Computer
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
-[![Contributors](https://img.shields.io/github/contributors/arpit2222/icodehix)](https://github.com/arpit2222/icodehix/graphs/contributors)  
-[![Issues](https://img.shields.io/github/issues/arpit2222/icodehix)](https://github.com/arpit2222/icodehix/issues)  
-[![Forks](https://img.shields.io/github/forks/arpit2222/icodehix?style=social)](https://github.com/arpit2222/icodehix/network/members)  
+A minimal, hackathon-ready music collaboration platform built on ICP with Rust backend and React frontend.
 
-📢 **Welcome to DEHIX x ICO!** A cutting-edge decentralized platform built with **Web3 technology**, designed to revolutionize **collaborative development and blockchain-based interactions**. 🚀  
+## 🚀 Quick Start
 
----
+### Prerequisites
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install/) installed
+- Node.js 18+ and npm
+- Rust toolchain
 
-## 📌 Table of Contents  
-- [Introduction](#-introduction)  
-- [Features](#-features)  
-- [Installation](#-installation)  
-- [Usage](#-usage)  
-- [Contributing](#-contributing)  
-- [License](#-license)  
-- [Contact](#-contact)  
+### Deploy to ICP
 
----
-
-## ✨ Introduction  
-**DEHIX x ICO** is a next-gen decentralized platform developed by [Arpit2222](https://github.com/arpit2222). It combines **blockchain, smart contracts, and Web3** to create a **scalable, secure, and transparent ecosystem** for developers and users.  
-
-🌍 **Powered by the Internet Computer Protocol (ICP),** DEHIX x ICO enables seamless decentralized interactions and transactions.  
-
----
-
-## 🔥 Features  
-✅ **Fully Decentralized** – No intermediaries, complete user ownership.  
-✅ **Web3 Integrated** – Smart contracts & blockchain-powered transactions.  
-✅ **Scalable & Secure** – Built with ICP for fast, secure processing.  
-✅ **User-Friendly UI** – Modern, responsive, and intuitive.  
-✅ **Developer-Focused** – Open-source and highly extensible.  
-
----
-
-## ⚙️ Installation  
-
-### 1️⃣ Clone the Repository  
-```bash
-git clone https://github.com/arpit2222/icodehix.git
-```
-
-### 2️⃣ Navigate into the Project Directory  
-```bash
-cd icodehix
-```
-
-### 3️⃣ Install Dependencies  
-Make sure you have [Node.js](https://nodejs.org/) installed, then run:  
-```bash
-npm install
-```
-
-### 4️⃣ Start the Development Server  
-```bash
-npm start
-```
-🌐 Your app will be live at: **[http://localhost:3000](http://localhost:3000)**  
-
----
-
-## 🚀 Usage  
-After installation, you can:  
-- **Register/Login** via decentralized authentication.  
-- **Deploy & Interact** with smart contracts.  
-- **Explore Web3 Services** and integrate with ICP.  
-
----
-
-## 👥 Contributing  
-💡 Contributions are welcome! Follow these steps to get started:  
-
-1️⃣ **Fork the Repository**  
-2️⃣ **Create a New Branch**  
+1. **Start local ICP network:**
    ```bash
-   git checkout -b feature/YourFeatureName
+   dfx start --background
    ```
-3️⃣ **Commit Your Changes**  
+
+2. **Install dependencies:**
    ```bash
-   git commit -m "Add: Description of your changes"
+   npm install
    ```
-4️⃣ **Push to Your Fork**  
+
+3. **Build the frontend:**
    ```bash
-   git push origin feature/YourFeatureName
+   npm run build
    ```
-5️⃣ **Submit a Pull Request** 🚀  
 
-🔹 For major changes, **open an issue** first to discuss.  
+4. **Deploy canisters:**
+   ```bash
+   dfx deploy
+   ```
 
----
+5. **Open the application:**
+   ```bash
+   dfx canister open orpheus_frontend
+   ```
 
-## 📜 License  
-This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.  
+## 🎯 Demo Steps
 
----
+1. **Landing Page** - Beautiful animated landing page loads first
+2. **Login/Signup** - Navigate to authentication pages
+3. **Dashboard** - After login, access project management
+4. **Create Projects** - Add new music collaboration projects
+5. **View Projects** - See all your created projects
 
-## 📩 Contact  
-For support, questions, or suggestions:  
-📧 **Email**: [your-email@example.com](mailto:your-email@example.com)  
-🌍 **Website**: [dehix-ico.org](https://dehix-ico.org)  
-🐦 **Twitter**: [@dehixico](https://twitter.com/dehixico)  
+## 🏗️ Project Structure
 
-💙 *Star this repo if you like the project!* ⭐  
+- **`src/LandingPage.tsx`** - Beautiful landing page with GSAP animations
+- **`src/LoginPage.tsx`** - User authentication login page
+- **`src/SignupPage.tsx`** - User registration page
+- **`src/Dashboard.tsx`** - Project management dashboard
+- **`src/App.tsx`** - Main app with React Router navigation
+- **`src/orpheus_backend/lib.rs`** - Rust canister with Candid interface
+- **`dfx.json`** - ICP deployment configuration
+- **`dist/`** - Frontend build output (auto-generated)
 
----
+## 🔧 Development
 
-### 🔗 **Let's Build the Future of Web3 Together!** 🚀  
+### Local Development
+```bash
+# Frontend (React)
+npm run dev
 
-![Blockchain Banner](https://via.placeholder.com/1200x300?text=Build+the+Future+of+Decentralized+Web3+with+Us!)
+# Backend (Rust)
+cargo build
+```
 
----
+### Build for Production
+```bash
+npm run build
+```
 
-## 🌟 How This README is Optimized  
-✅ **Markdown best practices** for clarity and navigation.  
-✅ **Icons, badges, and banners** for a professional look.  
-✅ **Step-by-step installation & contribution guide** for ease of use.  
-✅ **Contact & social links** to enhance engagement.  
+## 🌐 Canisters
 
-🚀 *This README makes your GitHub repo stand out while giving all the essential info in a structured and attractive way!*  
+- **`orpheus_backend`** - Rust canister handling project management
+- **`orpheus_frontend`** - Asset canister serving the React frontend
 
-# icodehix
-#icodehix
+## 📚 Backend API
+
+The backend canister provides these methods:
+- `whoami()` - Returns the caller's Principal
+- `create_project(name: String)` - Creates a new project
+- `list_projects()` - Returns all projects for the caller
+
+## 🎨 Frontend Features
+
+- **Landing Page First** - Beautiful animated ORPHEUS text loads first
+- **Hero Video Background** - Studio footage background
+- **GSAP Animations** - Smooth text animations and transitions
+- **Responsive Design** - Works on all device sizes
+- **Modern UI** - Clean, professional design with red accent color
+- **React Router** - Seamless navigation between pages
+
+## 🚀 Next Steps
+
+1. **Test the landing page** - Open the frontend URL
+2. **Navigate through pages** - Test login, signup, and dashboard
+3. **Customize animations** - Modify GSAP animations in LandingPage.tsx
+4. **Add more features** - Expand project management capabilities
+5. **Deploy to mainnet** - When ready for production
+
+## 🎵 Ready for Hackathon!
+
+Your project now has:
+- ✅ **Beautiful Landing Page** - Loads first with stunning animations
+- ✅ **ICP compatibility** - Deployed and working on Internet Computer
+- ✅ **Modern React frontend** - With routing and responsive design
+- ✅ **Rust backend canister** - Handling project management
+- ✅ **Professional UI/UX** - Based on your original design
+- ✅ **GSAP animations** - Smooth, engaging user experience
+
+**Happy hacking! 🚀🎶**
