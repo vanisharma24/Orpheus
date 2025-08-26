@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface Project {
   id: string;
@@ -14,8 +14,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const login = async () => {
-    // For demo purposes, we'll simulate a successful login
-    // In a real ICP app, this would integrate with Internet Identity
     const mockPrincipal = "rdmx6-jaaaa-aaaah-qcaiq-cai";
     setPrincipal(mockPrincipal);
     setIsAuthenticated(true);
@@ -30,11 +28,8 @@ function App() {
 
   const loadProjects = async () => {
     if (!principal) return;
-    
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      // This would call the canister method list_projects()
-      // For demo purposes, we'll simulate the response
       const mockProjects: Project[] = [
         { id: 'project_1', name: 'My First Song', owner_principal: principal },
         { id: 'project_2', name: 'Collaboration Track', owner_principal: principal },
@@ -51,16 +46,13 @@ function App() {
     e.preventDefault();
     if (!newProjectName.trim() || !principal) return;
 
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      // This would call the canister method create_project()
-      // For demo purposes, we'll simulate the response
       const newProject: Project = {
         id: `project_${Date.now()}`,
         name: newProjectName,
         owner_principal: principal,
       };
-      
       setProjects([...projects, newProject]);
       setNewProjectName('');
     } catch (error) {
@@ -70,15 +62,37 @@ function App() {
     }
   };
 
+  // ---------------- Landing Page ----------------
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-white mb-8">🎵 Orpheus</h1>
-          <p className="text-xl text-gray-300 mb-8">Music Collaboration on Internet Computer</p>
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Moving Blocks */}
+        <div className="blocks">
+          <div className="block animate-block bg-black"></div>
+          <div className="block animate-block bg-black"></div>
+          <div className="block animate-block bg-black"></div>
+        </div>
+
+        {/* Video Background */}
+        <div className="hero-video">
+          <video autoPlay loop muted>
+            <source src="studio1.mp4.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        {/* Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
+
+        {/* Landing Page Content */}
+        <div className="relative z-20 text-center px-4">
+          <h1 className="text-6xl font-augustus text-primary mb-8">Orpheus</h1>
+          <p className="text-xl font-french text-gray-300 mb-8">
+            Where Musicians Unite and Keep Control.
+          </p>
           <button
             onClick={login}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
+            className="bg-primary text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
           >
             Login with Internet Identity
           </button>
@@ -87,15 +101,21 @@ function App() {
     );
   }
 
+  // ---------------- Authenticated App ----------------
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen flex flex-col">
+      {/* Header / Navigation */}
+      <header className="bg-black font-augustus shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <h1 className="text-3xl font-bold text-gray-900">🎵 Orpheus</h1>
+            <h1 className="text-3xl font-bold text-textSecondary">Orpheus</h1>
+            <nav className="hidden md:flex space-x-6 font-medium text-gray-700">
+              <a href="#dashboard" className="hover:text-white transition-colors">Dashboard</a>
+              <a href="#projects" className="hover:text-white transition-colors">Projects</a>
+              <a href="#studio" className="hover:text-white transition-colors">Studio</a>
+            </nav>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-white">
                 Principal: {principal.slice(0, 10)}...{principal.slice(-10)}
               </span>
               <button
@@ -110,15 +130,15 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Create Project Form */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-6" id="projects">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Create New Project</h2>
             <form onSubmit={createProject} className="space-y-4">
               <div>
                 <label htmlFor="projectName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Name
+                 
                 </label>
                 <input
                   type="text"
@@ -133,7 +153,7 @@ function App() {
               <button
                 type="submit"
                 disabled={isLoading || !newProjectName.trim()}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                className="w-full bg-primary  disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
               >
                 {isLoading ? 'Creating...' : 'Create Project'}
               </button>
@@ -141,11 +161,11 @@ function App() {
           </div>
 
           {/* Projects List */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-6" id="dashboard">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Projects</h2>
             {isLoading ? (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                <div className=" rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 <p className="mt-2 text-gray-600">Loading projects...</p>
               </div>
             ) : projects.length === 0 ? (
@@ -173,6 +193,18 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 py-6 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm">&copy; {new Date().getFullYear()} Orpheus. All rights reserved.</p>
+          <div className="flex space-x-4 mt-2 md:mt-0">
+            <a href="#about" className="hover:text-white transition-colors">About</a>
+            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+            <a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
