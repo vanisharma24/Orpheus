@@ -1,25 +1,74 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
+# Orpheus Song Forge - Full Stack .gitignore
 
-# Mac OSX temporary files
-.DS_Store
-**/.DS_Store
-
-# dfx temporary files
-.dfx/
-
-# generated files
-**/declarations/
-
-# rust
-target/
-
-# frontend code
+# ===== FRONTEND (Node.js/React) =====
+# Dependencies
 node_modules/
-dist/
-.svelte-kit/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# environment variables
+# Build outputs
+dist/
+dist-ssr/
+build/
+*.local
+
+# ===== BACKEND (Rust) =====
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo
+Cargo.lock
+
+# ===== SHARED =====
+# Environment variables
 .env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+
+# IDE and Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project Specific
+/data/
+/uploads/
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ===== INTERNET COMPUTER (ICP) =====
+# DFX local network and canister data
+.dfx/
+target/
+src/*.did

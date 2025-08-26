@@ -72,7 +72,7 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-red-900 via-blue-900 to-indigo-900 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-6xl font-bold text-white mb-8">🎵 Orpheus</h1>
           <p className="text-xl text-gray-300 mb-8">Music Collaboration on Internet Computer</p>
