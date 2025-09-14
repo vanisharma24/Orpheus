@@ -1,39 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-
-.blocks {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.block {
-  flex: 1;
-  height: 100%;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  animation: moveBlocks 15s linear infinite;
-}
-
-@keyframes moveBlocks {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-.hero-video video {
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
