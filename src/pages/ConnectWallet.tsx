@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 // You can put a hero/blurred image in /assets/images/ and import if desired, or use an online link.
 // Example: import bgImage from '../assets/images/your-music-bg.jpg';
 
-const INTERNET_IDENTITY_URL = "https://identity.ic0.app/";
+import { login } from "../ic/agent";
 
-const openInternetIdentity = () => {
-  window.open(INTERNET_IDENTITY_URL, "_blank", "noopener,noreferrer");
+const handleLogin = async () => {
+  await login();
 };
 
 const BackgroundVideo = () => (
@@ -69,9 +69,9 @@ const Dashboard: React.FC = () => (
         <button
           className="w-full bg-[#730202] text-[#f5f5f5] font-poppins font-bold py-3 rounded-full text-lg mt-2
           shadow-lg shadow-[#73020299]/30 transition duration-300 hover:bg-[#f5f5f5] hover:text-[#730202]"
-          onClick={openInternetIdentity}
+          onClick={handleLogin}
         >
-          Open Internet Identity
+          Sign in with Internet Identity
         </button>
 
       </div>

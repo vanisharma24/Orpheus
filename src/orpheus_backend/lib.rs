@@ -38,13 +38,23 @@ lazy_static::lazy_static! {
     static ref NEXT_ID: AtomicU64 = AtomicU64::new(1);
 }
 
+// Guards
+fn is_authenticated() -> Result<(), String> {
+    let p = caller();
+    if p == Principal::anonymous() {
+        Err("Unauthenticated: call this method with an authenticated Internet Identity".to_string())
+    } else {
+        Ok(())
+    }
+}
+
 // Canister methods
 #[ic_cdk::query]
 pub fn whoami() -> Principal {
     caller()
 }
 
-#[ic_cdk::update]
+#[ic_cdk::update(guard = "is_authenticated")]
 pub fn create_project(request: CreateProjectRequest) -> CreateProjectResponse {
     let caller = caller();
     
@@ -73,7 +83,7 @@ pub fn create_project(request: CreateProjectRequest) -> CreateProjectResponse {
     }
 }
 
-#[ic_cdk::query]
+#[ic_cdk::query(guard = "is_authenticated")]
 pub fn list_projects() -> ListProjectsResponse {
     let caller = caller();
     

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 // Example: import bgImage from '../assets/images/your-music-bg.jpg';
 
 
-const INTERNET_IDENTITY_URL = "https://identity.ic0.app/";
+import { login } from "../ic/agent";
 
 const BackgroundVideo = () => (
   <div className="relative w-full h-screen overflow-hidden">
@@ -42,13 +42,10 @@ const Dashboard: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    window.open(INTERNET_IDENTITY_URL, "_blank", "noopener,noreferrer");
-    // Simulate login success after redirect (replace with actual callback in production)
-    setTimeout(() => {
-      setLoggedIn(true);
-      navigate("/");
-    }, 2000); // Simulate 2s login
+  const handleLogin = async () => {
+    await login();
+    setLoggedIn(true);
+    navigate("/");
   };
 
   return (
