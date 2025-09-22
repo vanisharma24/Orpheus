@@ -4,11 +4,19 @@ import type { IDL } from '@dfinity/candid';
 import { idlFactory } from './idl';
 import { IC_HOST, II_URL, ORPHEUS_BACKEND_CANISTER_ID } from './config';
 
-// Type placeholder since we don't have generated TS types.
+// Type definitions for OrpheusBackend with $MUSE Token System
 export type OrpheusBackend = {
-  whoami: () => Promise<string>; // Principal to text conversion will be automatic by agent
+  // Existing project methods
+  whoami: () => Promise<string>;
   create_project: (req: { name: string }) => Promise<{ success: boolean; project_id: [] | [string]; error: [] | [string]; }>;
   list_projects: () => Promise<{ success: boolean; projects: Array<{ id: string; name: string; owner_principal: string }>; error: [] | [string]; }>;
+
+  // $MUSE Token System methods
+  get_token_info: () => Promise<{ total_supply: bigint; symbol: string; name: string; decimals: number; }>;
+  get_balance: (principal: string) => Promise<{ balance: bigint; }>;
+  transfer_tokens: (req: { to: string; amount: number }) => Promise<{ success: boolean; error: [] | [string]; }>;
+  mint_tokens: (req: { to: string; amount: number; reason: string }) => Promise<{ success: boolean; error: [] | [string]; }>;
+  reward_collaboration: (projectId: string, collaborators: Array<[string, number]>, reason: string) => Promise<{ success: boolean; error: [] | [string]; }>;
 };
 
 let authClient: AuthClient | null = null;
@@ -20,7 +28,7 @@ const createAgent = async () => {
   const identity = (await client.isAuthenticated()) ? client.getIdentity() : undefined;
 
   const agent = new HttpAgent({ host: IC_HOST, identity });
-  if (import.meta.env.DEV && IC_HOST.includes('127.0.0.1')) {
+  if (process.env.NODE_ENV === 'development' && IC_HOST.includes('127.0.0.1')) {
     try {
       await agent.fetchRootKey();
     } catch (e) {

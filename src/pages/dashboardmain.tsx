@@ -1,6 +1,11 @@
 // pages/UserDashboard.tsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import TokenBalance from "../components/TokenBalance";
+import TokenTransfer from "../components/TokenTransfer";
+import CollaborationRewards from "../components/CollaborationRewards";
+import { Principal } from '@dfinity/principal';
+import { whoami } from "../ic/api";
 
 // Types
 interface Project {
@@ -37,13 +42,14 @@ interface Stats {
 }
 
 const UserDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "collaborations">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "projects" | "collaborations" | "tokens">("overview");
   const [stats, setStats] = useState<Stats>({
     projects: 0,
     collaborations: 0,
     tracks: 0,
     connections: 0
   });
+  const [userPrincipal, setUserPrincipal] = useState<Principal | null>(null);
 
   // Sample data
   const myProjects: Project[] = [
@@ -77,20 +83,27 @@ const UserDashboard: React.FC = () => {
   ];
 
   const collaborations: Collaboration[] = [
-    { 
-      id: "4", 
-      title: "Ocean Waves", 
-      owner: "Maria Garcia", 
-      role: "Sound Designer", 
-      lastUpdated: "Yesterday" 
+    {
+      id: "4",
+      title: "Ocean Waves",
+      owner: "Maria Garcia",
+      role: "Sound Designer",
+      lastUpdated: "Yesterday"
     },
-    { 
-      id: "5", 
-      title: "Mountain Echoes", 
-      owner: "Alex Johnson", 
-      role: "Guitarist", 
-      lastUpdated: "5 days ago" 
+    {
+      id: "5",
+      title: "Mountain Echoes",
+      owner: "Alex Johnson",
+      role: "Guitarist",
+      lastUpdated: "5 days ago"
     },
+  ];
+
+  // Sample collaboration data for rewards
+  const sampleCollaborators = [
+    { principal: "aaaaa-aa", role: "Producer", rewardAmount: 40 },
+    { principal: "bbbbb-bb", role: "Vocalist", rewardAmount: 30 },
+    { principal: "ccccc-cc", role: "Mixing Engineer", rewardAmount: 30 }
   ];
 
   const recentActivities: RecentActivity[] = [
@@ -131,6 +144,18 @@ const UserDashboard: React.FC = () => {
       tracks: 14, // Example value
       connections: 8 // Example value
     });
+
+    // Get user principal for token balance
+    const fetchUserPrincipal = async () => {
+      try {
+        const principalText = await whoami();
+        setUserPrincipal(Principal.fromText(principalText));
+      } catch (error) {
+        console.error('Failed to get user principal:', error);
+      }
+    };
+
+    fetchUserPrincipal();
   }, []);
 
   const getActivityIcon = (type: RecentActivity['type']) => {
@@ -194,26 +219,39 @@ const UserDashboard: React.FC = () => {
             <div className="text-gray-400 mt-2">Connections</div>
           </div>
         </div>
+
+        {/* Token Balance Display */}
+        {userPrincipal && (
+          <div className="mb-8">
+            <TokenBalance principal={userPrincipal.toString()} />
+          </div>
+        )}
         
         {/* Tabs Navigation */}
-        <div className="flex border-b border-[#730202] mb-8">
+        <div className="flex border-b border-[#730202] mb-8 overflow-x-auto">
           <button
-            className={`py-2 px-4 font-poppins ${activeTab === "overview" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
+            className={`py-2 px-4 font-poppins whitespace-nowrap ${activeTab === "overview" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
             onClick={() => setActiveTab("overview")}
           >
             📊 Overview
           </button>
           <button
-            className={`py-2 px-4 font-poppins ${activeTab === "projects" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
+            className={`py-2 px-4 font-poppins whitespace-nowrap ${activeTab === "projects" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
             onClick={() => setActiveTab("projects")}
           >
             📁 My Projects
           </button>
           <button
-            className={`py-2 px-4 font-poppins ${activeTab === "collaborations" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
+            className={`py-2 px-4 font-poppins whitespace-nowrap ${activeTab === "collaborations" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
             onClick={() => setActiveTab("collaborations")}
           >
             👥 Collaborations
+          </button>
+          <button
+            className={`py-2 px-4 font-poppins whitespace-nowrap ${activeTab === "tokens" ? "border-b-2 border-[#730202] text-[#f5f5f5]" : "text-gray-400"}`}
+            onClick={() => setActiveTab("tokens")}
+          >
+            🪙 Tokens
           </button>
         </div>
         
@@ -340,8 +378,8 @@ const UserDashboard: React.FC = () => {
             {collaborations.length === 0 ? (
               <div className="bg-[#000000] border border-[#730202] rounded-xl p-8 text-center">
                 <p className="text-gray-400 mb-4">You haven't joined any projects yet.</p>
-                <Link 
-                  to="/community" 
+                <Link
+                  to="/community"
                   className="bg-[#730202] hover:bg-[#8a0303] text-[#f5f5f5] font-poppins font-medium py-2 px-6 rounded-lg inline-flex items-center transition-colors"
                 >
                   Explore Community
@@ -356,8 +394,8 @@ const UserDashboard: React.FC = () => {
                     <p className="text-gray-400 mb-2">Your role: {project.role}</p>
                     <p className="text-gray-400 text-sm mb-4">Last updated: {project.lastUpdated}</p>
                     <div className="mt-4">
-                      <Link 
-                        to={`/project/${project.id}`} 
+                      <Link
+                        to={`/project/${project.id}`}
                         className="text-[#730202] hover:text-[#8a0303] font-poppins font-medium transition-colors"
                       >
                         Open Project →
@@ -369,13 +407,57 @@ const UserDashboard: React.FC = () => {
             )}
           </div>
         )}
+
+        {activeTab === "tokens" && userPrincipal && (
+          <div>
+            <h2 className="text-2xl font-poppins font-semibold mb-4">$MUSE Token Management</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <TokenBalance principal={userPrincipal.toString()} />
+              <TokenTransfer
+                userPrincipal={userPrincipal.toString()}
+                onTransferSuccess={() => {
+                  // Refresh balance after transfer
+                  window.location.reload();
+                }}
+              />
+            </div>
+
+            {/* Collaboration Rewards Section */}
+            <div className="mt-8">
+              <h3 className="text-xl font-poppins font-semibold mb-4 text-[#f5f5f5]">
+                🎁 Collaboration Rewards
+              </h3>
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <CollaborationRewards
+                  projectId="sample-project-1"
+                  collaborators={sampleCollaborators}
+                  onRewardDistributed={() => {
+                    // Refresh balance after reward distribution
+                    window.location.reload();
+                  }}
+                />
+                <div className="bg-[#000000] border border-[#730202] rounded-xl p-6">
+                  <h4 className="text-lg font-poppins font-medium mb-3 text-[#f5f5f5]">
+                    How It Works
+                  </h4>
+                  <ul className="space-y-2 text-gray-400 text-sm font-poppins">
+                    <li>• Project owners can distribute $MUSE tokens to collaborators</li>
+                    <li>• Rewards are automatically minted and transferred</li>
+                    <li>• Tokens can be used for platform features and governance</li>
+                    <li>• Higher contributions earn higher rewards</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Quick Actions */}
         <div className="mt-12">
           <h2 className="text-2xl font-poppins font-semibold mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Link 
-              to="/project/new" 
+              to="/create" 
               className="bg-[#000000] border border-[#730202] rounded-xl p-6 text-center hover:shadow-lg hover:shadow-[#730202]/20 transition-all"
             >
               <div className="text-3xl mb-3">🎵</div>

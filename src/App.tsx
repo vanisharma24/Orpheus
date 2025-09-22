@@ -8,6 +8,7 @@ import CreateProjectPage from "./pages/create";
 import ProjectOnboarding from "./pages/Project";
 import SettingsPage from "./pages/settings";
 import MusicWorkspace from "./pages/Workspace";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const AnimatedReveal: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
   const [isVisible, setVisible] = useState(false);
@@ -219,28 +220,30 @@ const Footer = () => {
 import './App.css';
 
 const App: React.FC = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={
-        <>
-          <Navbar />
-          <Header />
-          <Services />
-          <HowItWorks />
-          <Footer />
-        </>
-      } />
-  <Route path="/dashboard" element={<><Navbar /><DashboardMain /></>} />
-  <Route path="/dashboardmain" element={<><Navbar /><DashboardMain /></>} />
-      <Route path="/connectwallet" element={<><Navbar /><ConnectWallet /></>} />
-      <Route path="/community" element={<><CollabNavbar /><CommunityPage /></>} />
-      <Route path="/userprofile" element={<><CollabNavbar /><UserProfile /></>} />
-      <Route path="/create" element={<><CollabNavbar /><CreateProjectPage /></>} />
-      <Route path="/project" element={<><CollabNavbar /><ProjectOnboardingWrapper /></>} />
-      <Route path="/settings" element={<><CollabNavbar /><SettingsPage /></>} />
-      <Route path="/workspace" element={<><CollabNavbar /><MusicWorkspace /></>} />
-    </Routes>
-  </Router>
+  <ErrorBoundary>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Navbar />
+            <Header />
+            <Services />
+            <HowItWorks />
+            <Footer />
+          </>
+        } />
+        <Route path="/dashboard" element={<><Navbar /><DashboardMain /></>} />
+        <Route path="/dashboardmain" element={<><Navbar /><DashboardMain /></>} />
+        <Route path="/connectwallet" element={<><Navbar /><ConnectWallet /></>} />
+        <Route path="/community" element={<><CollabNavbar /><CommunityPage /></>} />
+        <Route path="/userprofile" element={<><CollabNavbar /><UserProfile /></>} />
+        <Route path="/create" element={<><CollabNavbar /><CreateProjectPage /></>} />
+        <Route path="/project" element={<><CollabNavbar /><ProjectOnboardingWrapper /></>} />
+        <Route path="/settings" element={<><CollabNavbar /><SettingsPage /></>} />
+        <Route path="/workspace" element={<><CollabNavbar /><MusicWorkspace /></>} />
+      </Routes>
+    </Router>
+  </ErrorBoundary>
 );
 
 export default App;
